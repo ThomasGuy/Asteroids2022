@@ -16,11 +16,12 @@ class Pilot(PhysicalObject):
     event handler in 'Version3'.
     """
 
+    player = pyglet.media.Player()
+
     def __init__(self, dimension, *args, **kwargs):
         super().__init__(
             img=get_image("engine_stop"), info=get_info("engine_stop"), *args, **kwargs
         )
-        self.player = pyglet.media.Player()
         self.dimension = dimension
         # Tell the game handler about any event handlers
         self.key_handler = key.KeyStateHandler()
@@ -58,12 +59,12 @@ class Pilot(PhysicalObject):
             self.ship_engine.x = self.x
             self.ship_engine.y = self.y
             self.ship_engine.visible = True
-            # self.sound.rewind()
+
             self.player.queue(self.sound)
             self.player.play()
         else:
             self.ship_engine.visible = False
-            self.player.seek(0.0)
+            self.sound_reset()
 
         if self.enemy:
             if self.key_handler[key.SPACE]:
@@ -91,6 +92,9 @@ class Pilot(PhysicalObject):
         self.new_missiles.add(new_missile)
 
     def delete(self):
-        self.player.seek(0.0)
+        self.sound_reset()
         self.ship_engine.delete()
         super().delete()
+
+    def sound_reset(self):
+        self.player.seek(0.0)

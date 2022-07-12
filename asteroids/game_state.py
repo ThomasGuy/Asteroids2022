@@ -46,6 +46,7 @@ class State:
 
     def delete_player(self):
         self.remove_game_object(self.player_ship)
+        self.player_ship.sound_reset()
         self.player_ship.delete()
 
     # Create enemy ship

@@ -6,8 +6,17 @@ import sys
 import pyglet
 from pyglet.text import Label
 
-from asteroids import State, Explosion, Asteroid, group_collide, group_group_collide
+from asteroids import (
+    State,
+    Explosion,
+    Asteroid,
+    group_collide,
+    group_group_collide,
+    pyglet_sounds,
+)
 
+player = pyglet.media.Player()
+music = pyglet_sounds["sound_track"]
 
 # Set display for full_screen mode
 display = pyglet.canvas.Display()
@@ -43,6 +52,9 @@ GAME_OVER_label = Label(
     font_size=48,
 )
 
+player.queue(music)
+player.play()
+
 
 def reset_level():
     # Initialize game components
@@ -50,12 +62,16 @@ def reset_level():
     game.mk_player_ship(WIDTH / 2, HEIGHT / 2, main_batch)
     game.spawn_rocks(main_batch)
     game.player_icons(main_batch)
+    player.seek(0.0)
 
     # Add any specified event handlers to the event handler stack
     for obj in game.get_game_objects():
         for handler in obj.event_handlers:
             game_window.push_handlers(handler)
             game._event_stack_size += 1
+
+    player.queue(music)
+    player.play()
 
 
 @game_window.event
@@ -100,6 +116,7 @@ def update(dt):
         game.reset_enemy_missiles(enemy_missiles)
         if kill or collision:
             ship_destroyed = True
+            game.get_player_ship().sound_reset()
             game.dec_lives()
 
     ######################  Update game Sprites  #######################
@@ -143,13 +160,13 @@ def update(dt):
 
     # Add new missiles to missile group
     game.update_all_missiles()
+
     # Update game objects
-    game.update_game_objects(
-        Add_Game_Objects
-        | game.get_missiles()
-        | game.get_enemy_missiles()
-        | game.get_enemy_ship()
+    Game_Objects = Add_Game_Objects.union(
+        game.get_missiles(), game.get_enemy_missiles(), game.get_enemy_ship()
     )
+    game.update_game_objects(Game_Objects)
+
     # Add newly spawned rocks to group rocks
     game.update_rocks(Add_Game_Objects)
     if len(game.get_rocks()) == 0:
