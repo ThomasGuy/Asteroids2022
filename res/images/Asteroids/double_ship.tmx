@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="2" height="1" tilewidth="90" tileheight="90" nextobjectid="1">
+ <tileset firstgid="1" name="double_ship" tilewidth="90" tileheight="90" tilecount="2" columns="2">
+  <image source="double_ship.png" trans="ff00ff" width="180" height="90"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="2" height="1">
+  <data encoding="csv">
+1,2
+</data>
+ </layer>
+</map>

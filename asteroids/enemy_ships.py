@@ -8,7 +8,7 @@ from .explosion import Explosion
 from .missile import Missile
 from .helper import angle_to_vector
 from .physical_object import PhysicalObject
-from .resources import get_image, get_sound, get_info, enemy_ship
+from .resources import get_image, pyglet_sound, get_info, enemy_ship
 
 
 class EnemyShips(PhysicalObject):
@@ -37,7 +37,7 @@ class EnemyShips(PhysicalObject):
             dimension=self.dimension,
             img=get_image("enemy_missile"),
             info=get_info("enemy_missile"),
-            sound=get_sound("missile_sound"),
+            sound=pyglet_sound("missile_sound"),
         )
         new_missile.velocity_x = self.velocity_x + vector[0] * new_missile.speed
         new_missile.velocity_y = self.velocity_y + vector[1] * new_missile.speed

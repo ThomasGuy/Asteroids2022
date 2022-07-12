@@ -8,7 +8,7 @@ import pygame
 from pyglet.sprite import Sprite
 from .asteroid import Asteroid
 from .helper import distance
-from .player import Player
+from .pilot import Pilot
 from .enemy_ships import EnemyShips
 from .resources import get_image, roids, get_info
 
@@ -36,7 +36,7 @@ class State:
 
     # Create player ship
     def mk_player_ship(self, x, y, batch):
-        self.player_ship = Player(x=x, y=y, batch=batch, dimension=self.win_size)
+        self.player_ship = Pilot(x=x, y=y, batch=batch, dimension=self.win_size)
         self.player_ship.scale = 0.75
         self.player_ship.radius *= 0.75
         self._game_objects.add(self.player_ship)

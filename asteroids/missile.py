@@ -6,7 +6,7 @@ from .physical_object import PhysicalObject
 
 class Missile(PhysicalObject):
     """
-     Missiles fired by player
+    Missiles fired by player
     """
 
     def __init__(self, *args, **kwargs):
@@ -17,4 +17,4 @@ class Missile(PhysicalObject):
 
     def die(self, dt):
         self.dead = True
-        self.sound.stop()
+        # self.sound.stop()

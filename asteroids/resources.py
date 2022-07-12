@@ -9,7 +9,8 @@ import pyglet
 from pyglet.image import Animation, AnimationFrame, ImageGrid
 from pyglet.resource import image, media
 from res.images.info import Info
-from .play_sound import Sounds
+
+# from .play_sound import Sounds
 
 
 def create_effect_animation(image_name, columns, rows):
@@ -31,6 +32,7 @@ pyglet.resource.path = [
     "res/images/Spaceships-KaaR",
     "res/sounds/wav",
 ]
+
 pyglet.resource.reindex()
 
 player_ship = ImageGrid(image("double_ship.png"), 1, 2)
@@ -77,11 +79,21 @@ enemy_ship = {
 
 # Dictionary of sounds
 # Sounds ( 'track', volume = 0.8, streaming = False)
-sounds = {
-    "thrust_sound": Sounds(media("space-engine-thrust.wav")),
-    "explosion_sound": Sounds(media("explosion.wav")),
-    "soundtrack": Sounds(media("soundtrack.wav")),
-    "missile_sound": Sounds(media("Laser_Shoot6.wav"), volume=0.2),
+# sounds = {
+#     "thrust_sound": Sounds(media("space-engine-thrust.wav")),
+#     "explosion_sound": Sounds(media("explosion.wav")),
+#     "soundtrack": Sounds(media("soundtrack.wav")),
+#     "missile_sound": Sounds(media("Laser_Shoot6.wav"), volume=0.2),
+# }
+pyglet_sounds = {
+    "sound_track": pyglet.media.load("res/sounds/wav/soundtrack.wav"),
+    "thrust_sound": pyglet.media.StaticSource(media("space-engine-thrust.wav")),
+    "explosion_sound": pyglet.media.StaticSource(
+        media("explosion.wav", streaming=False)
+    ),
+    "missile_sound": pyglet.media.StaticSource(
+        media("Laser_Shoot6.wav", streaming=False)
+    ),
 }
 
 # Asteroid sprites list
@@ -121,5 +133,9 @@ def get_info(img):
     return sprites[img][0]
 
 
-def get_sound(track):
-    return sounds[track]
+# def get_sound(track):
+#     return sounds[track]
+
+
+def pyglet_sound(track):
+    return pyglet_sounds[track]
