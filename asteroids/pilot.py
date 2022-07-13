@@ -92,9 +92,12 @@ class Pilot(PhysicalObject):
         self.new_missiles.add(new_missile)
 
     def delete(self):
-        self.sound_reset()
+        self.player.pause()
         self.ship_engine.delete()
         super().delete()
 
     def sound_reset(self):
         self.player.seek(0.0)
+
+    def pause(self):
+        self.player.pause()

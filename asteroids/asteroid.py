@@ -5,7 +5,7 @@ from .physical_object import PhysicalObject
 
 
 class Asteroid(PhysicalObject):
-    """ An asteroid that breaks up before it dies """
+    """An asteroid that breaks up before it dies"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -22,17 +22,21 @@ class Asteroid(PhysicalObject):
         if self.scale > 0.25:
             num_asteroids = random.choice([2, 3, 4])
             for idx in range(num_asteroids):
-                new_asteroid = Asteroid(img=self.image, info=self.info,
-                                        x=self.x, y=self.y, batch=self.batch,
-                                        dimension=self.dimension)
+                new_asteroid = Asteroid(
+                    img=self.image,
+                    info=self.info,
+                    x=self.x,
+                    y=self.y,
+                    batch=self.batch,
+                    dimension=self.dimension,
+                )
                 new_asteroid.velocity_x += self.velocity_x
                 new_asteroid.velocity_y += self.velocity_y
                 new_asteroid.angle_vel += self.angle_vel
                 # Spawn enemy space ship
                 if abs(new_asteroid.angle_vel) > 330:
-                    print('got_one %d ' % new_asteroid.angle_vel)
+                    # print('got_one %d ' % new_asteroid.angle_vel)
                     new_asteroid.enemy = True
                 new_asteroid.scale = self.scale * 0.5
                 new_asteroid.radius *= 0.5
                 self.new_objects.add(new_asteroid)
-

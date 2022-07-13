@@ -15,17 +15,17 @@ from asteroids import (
     pyglet_sounds,
 )
 
-player = pyglet.media.Player()
 music = pyglet_sounds["sound_track"]
 
 # Set display for full_screen mode
 display = pyglet.canvas.Display()
-screens = display.get_screens()
-game_window = pyglet.window.Window(fullscreen=True, screen=screens[1])
+screen = display.get_screens()
+game_window = pyglet.window.Window(fullscreen=True, screen=screen[1])
 # game_window = pyglet.window.Window(1200, 900)
 game_window.set_mouse_visible(False)
 main_batch = pyglet.graphics.Batch()
 
+PLAYER = pyglet.media.Player()
 GAME_OVER = False
 WIDTH = game_window.width
 HEIGHT = game_window.height
@@ -33,6 +33,7 @@ HEIGHT = game_window.height
 fps_display = pyglet.window.FPSDisplay(window=game_window)
 
 game = State(game_window)
+
 score_label = Label(text="Score: 0", x=10, y=HEIGHT - 15, batch=main_batch)
 level_label = Label(
     text="Pyglet Asteroids2 level 1",
@@ -52,8 +53,8 @@ GAME_OVER_label = Label(
     font_size=48,
 )
 
-player.queue(music)
-player.play()
+PLAYER.queue(music)
+PLAYER.play()
 
 
 def reset_level():
@@ -62,16 +63,12 @@ def reset_level():
     game.mk_player_ship(WIDTH / 2, HEIGHT / 2, main_batch)
     game.spawn_rocks(main_batch)
     game.player_icons(main_batch)
-    player.seek(0.0)
 
     # Add any specified event handlers to the event handler stack
     for obj in game.get_game_objects():
         for handler in obj.event_handlers:
             game_window.push_handlers(handler)
             game._event_stack_size += 1
-
-    player.queue(music)
-    player.play()
 
 
 @game_window.event
@@ -85,11 +82,13 @@ def on_draw():
 def on_key_press(symbol, modifiers):
     if symbol == pyglet.window.key.LCTRL:
         print("Score: %d  and level: %d" % (game._score, game.level), end="\n")
+        PLAYER.pause()
+        game.get_player_ship().player.pause()
         sys.exit()
 
 
 def update(dt):
-    global GAME_OVER
+    global GAME_OVER, PLAYER
     level_complete = False
     ship_destroyed = False
 
@@ -175,11 +174,15 @@ def update(dt):
     # Check for win/lose conditions
     if ship_destroyed:
         if game._num_lives > 0:
+            PLAYER.seek(0.0)
+            # PLAYER.queue(music)
+            PLAYER.play()
             game.delete_player()
             reset_level()
         else:
             GAME_OVER_label.y = HEIGHT * 0.8
             game.clear_event_handlers()
+            game.get_player_ship().pause()
             game.delete_player()
             game.player_icons(main_batch)
             GAME_OVER = True

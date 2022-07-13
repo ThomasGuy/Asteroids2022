@@ -4,7 +4,6 @@ __author__ = "Tom Guy"
 ###################   Version3 of Pyglet Asteroids   ###################
 
 import random
-import pygame
 from pyglet.sprite import Sprite
 from .asteroid import Asteroid
 from .helper import distance
